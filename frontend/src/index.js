@@ -1,7 +1,7 @@
 // src/index.js
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './styles/index.css'; // 导入全局样式
 import App from './App';
 
 ReactDOM.render(

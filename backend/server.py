@@ -1,8 +1,7 @@
 # backend/server.py
-from flask import Flask
-from routes import auth_bp
-from config import Config
-from jsonify import jsonify
+from flask import Flask, jsonify  # Corregido: importar jsonify de Flask
+from routes import auth_bp        # Asegúrate de que 'routes' exista y contenga 'auth_bp'
+from config import Config         # Asegúrate de que 'config.py' exista y contenga la clase 'Config'
 
 app = Flask(__name__)
 app.config.from_object(Config)

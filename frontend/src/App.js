@@ -1,23 +1,25 @@
 // src/App.js
 import React from 'react';
-import SearchBar from './components/SearchBar';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import AdminPage from './pages/AdminPage';
+import UserPage from './pages/UserPage';
+import './styles/index.css';
 
-const App = () => {
-  const data = [
-    "Apple",
-    "Banana",
-    "Orange",
-    "Mango",
-    "Pineapple",
-    "Watermelon",
-    "Grapes",
-    "Strawberry"
-  ];
-
+function App() {
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }}>
-      <SearchBar placeholder="Search fruits..." data={data} />
-    </div>
+    <Router>
+      <div className="App">
+        <Navbar />
+        <Switch>
+          <Route path="/" exact>
+            <h1>Welcome to Home Page</h1>
+          </Route>
+          <Route path="/user" component={UserPage} />
+          <Route path="/admin" component={AdminPage} />
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
