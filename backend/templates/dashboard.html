@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Bienvenido, {{ user.username }}</h2>
+        <p>Este es tu panel de usuario.</p>
+        <a href="/logout">Cerrar Sesión</a>
+    </div>
+</body>
+</html>
