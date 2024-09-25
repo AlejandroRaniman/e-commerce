@@ -17,13 +17,11 @@ const Header = () => {
                         <FaSearch />
                     </button>
                 </div>
-                {/* Botón de Iniciar Sesión */}
                 <div className="login-button">
                     <button className="login">
                         <FaUser /> Iniciar
                     </button>
                 </div>
-                {/* Icono del Carrito */}
                 <div className="cart-icon">
                     <FaShoppingCart />
                 </div>

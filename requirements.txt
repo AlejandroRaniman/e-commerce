@@ -1,0 +1,24 @@
+bcrypt==4.2.0
+blinker==1.8.2
+click==8.1.7
+colorama==0.4.6
+Flask==3.0.3
+Flask-Bcrypt==1.0.1
+Flask-MySQLdb==2.0.0
+itsdangerous==2.2.0
+Jinja2==3.1.4
+jsonify==0.5
+MarkupSafe==2.1.5
+mysqlclient==2.2.4
+Werkzeug==3.0.4
+
+# Node
+frontend@1.0.0 D:\E-commerce
+├── bindings@1.5.0 extraneous
+├── file-uri-to-path@1.0.0 extraneous
+├── nan@2.20.0 extraneous
+├── react-dom@17.0.2
+├── react-icons@5.3.0
+├── react-router-dom@5.3.4
+├── react-scripts@4.0.3
+└── react@17.0.2
