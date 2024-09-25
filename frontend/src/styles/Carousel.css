@@ -1,0 +1,88 @@
+.carousel {
+  position: relative;
+  width: 800px;
+  height: 400px;
+  margin: 40px auto;
+  overflow: hidden; /* Asegura que el contenido adicional no se muestre */
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.carousel-inner {
+  display: flex; /* Cambiar a flex para que los items estén en fila */
+  transition: transform 0.5s ease-in-out; /* Suaviza la transición de desplazamiento */
+  width: 100%; /* Asegura que ocupe todo el espacio */
+  height: 100%;
+}
+
+.carousel-item {
+  flex: 0 0 100%; /* Cada item ocupará el 100% del ancho del carrusel */
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out; /* Suaviza la transición de visibilidad */
+  display: flex;
+  justify-content: center; /* Centra la imagen horizontalmente */
+  align-items: center; /* Centra la imagen verticalmente */
+}
+
+.carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.carousel-item.active {
+  opacity: 1; /* Mostrar el item activo */
+}
+
+.carousel-prev,
+.carousel-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 24px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  outline: none;
+  transition: background-color 0.3s ease; /* Efecto al pasar el mouse */
+  z-index: 1; /* Asegura que los botones estén por encima del contenido */
+}
+
+.carousel-prev:hover,
+.carousel-next:hover {
+  background-color: rgba(0, 0, 0, 0.7); /* Cambia el fondo al pasar el mouse */
+}
+
+.carousel-prev {
+  left: 10px;
+}
+
+.carousel-next {
+  right: 10px;
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 10px; /* Ajusta según tu diseño */
+  width: 100%;
+}
+
+.carousel-dot {
+  width: 12px;
+  height: 12px;
+  background-color: #bbb;
+  border-radius: 50%;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.carousel-dot.active {
+  background-color: #717171;
+}

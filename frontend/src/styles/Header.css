@@ -23,10 +23,11 @@
     display: flex;
     flex: 1;
     margin: 0 20px;
+    justify-content: center;
 }
 
 .search-input {
-    width: 100%;
+    width: 80%;
     padding: 8px 12px;
     border: none;
     border-radius: 4px 0 0 4px;
@@ -69,6 +70,8 @@
     font-size: 24px;
     color: #fff;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
 }
 
 .cart-icon:hover {
