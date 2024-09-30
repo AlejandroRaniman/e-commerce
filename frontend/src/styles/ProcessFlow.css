@@ -1,0 +1,70 @@
+/* src/styles/ProcessFlow.css */
+
+.process-flow-container {
+    width: 80%;
+    margin: 20px auto;
+    text-align: center;
+  }
+  
+  h2 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: #555;
+  }
+  
+  .subtext {
+    font-size: 1.1em;
+    color: #e6e600;
+    margin-bottom: 40px;
+  }
+  
+  .steps-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .step {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    width: 60%;
+  }
+  
+  .step-number {
+    font-size: 1.5em;
+    font-weight: bold;
+    background-color: #333;
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 20px;
+  }
+  
+  .step-content {
+    text-align: left;
+  }
+  
+  .step-content h3 {
+    font-size: 1.3em;
+    margin: 0;
+    color: #333;
+  }
+  
+  .step-content p {
+    font-size: 1em;
+    color: #555;
+    margin: 5px 0 0 0;
+  }
+  
+  .step-divider {
+    width: 2px;
+    height: 50px;
+    background-color: #333;
+    margin-left: 30px;
+  }
+  

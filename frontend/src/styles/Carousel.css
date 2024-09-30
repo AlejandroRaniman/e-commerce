@@ -1,8 +1,8 @@
 .carousel {
   position: relative;
-  width: 800px;
-  height: 400px;
-  margin: 40px auto;
+  /* width: 800px; */
+  height: 450px;
+  /* margin: 40px auto; */
   overflow: hidden; /* Asegura que el contenido adicional no se muestre */
   border-radius: 10px; /* Bordes redondeados */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
