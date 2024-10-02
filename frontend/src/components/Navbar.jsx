@@ -3,98 +3,74 @@ import '../styles/Navbar.css'; // Asegúrate de crear este archivo para los esti
 
 const Navbar = () => {
     return (
-        <nav className="navbar">
-            <ul className="navbar-list">
-                <li className="navbar-item">
-                    Hogar
-                    <span className="dropdown-icon">▼</span>
-                    <div className="dropdown">
-                        <ul>
-                            <li>Decoración</li>
-                            <li>Iluminación</li>
-                            <li>Muebles</li>
-                        </ul>
-                    </div>
-                </li>
-                <li className="navbar-item">
-                    Cocina
-                    <span className="dropdown-icon">▼</span>
-                    <div className="dropdown">
-                        <ul>
-                            <li>Decoración</li>
-                            <li>Iluminación</li>
-                            <li>Muebles</li>
-                        </ul>
-                    </div>
-                </li>
-                <li className="navbar-item">
-                    Baño
-                    <span className="dropdown-icon">▼</span>
-                    <div className="dropdown">
-                        <ul>
-                            <li>Decoración</li>
-                            <li>Iluminación</li>
-                            <li>Muebles</li>
-                        </ul>
-                    </div>
-                </li>
-                <li className="navbar-item">
-                    Juguetería
-                    <span className="dropdown-icon">▼</span>
-                    <div className="dropdown">
-                        <ul>
-                            <li>Decoración</li>
-                            <li>Iluminación</li>
-                            <li>Muebles</li>
-                        </ul>
-                    </div>
-                </li>
-                <li className="navbar-item">
-                    Útiles
-                    <span className="dropdown-icon">▼</span>
-                    <div className="dropdown">
-                        <ul>
-                            <li>Decoración</li>
-                            <li>Iluminación</li>
-                            <li>Muebles</li>
-                        </ul>
-                    </div>
-                </li>
-                <li className="navbar-item">
-                    Jardín
-                    <span className="dropdown-icon">▼</span>
-                    <div className="dropdown">
-                        <ul>
-                            <li>Decoración</li>
-                            <li>Iluminación</li>
-                            <li>Muebles</li>
-                        </ul>
-                    </div>
-                </li>
-                <li className="navbar-item">
-                    Ferretería
-                    <span className="dropdown-icon">▼</span>
-                    <div className="dropdown">
-                        <ul>
-                            <li>Decoración</li>
-                            <li>Iluminación</li>
-                            <li>Muebles</li>
-                        </ul>
-                    </div>
-                </li>
-                <li className="navbar-item">
-                    Celebraciones
-                    <span className="dropdown-icon">▼</span>
-                    <div className="dropdown">
-                        <ul>
-                            <li>Decoración</li>
-                            <li>Iluminación</li>
-                            <li>Muebles</li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-        </nav>
+<nav class="navbar">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="#" class="nav-link">Hogar</a>
+                <div class="dropdown-menu">
+                    <a href="#" class="dropdown-item">Subcategoría 1</a>
+                    <a href="#" class="dropdown-item">Subcategoría 2</a>
+                    <a href="#" class="dropdown-item">Subcategoría 3</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">Cocina</a>
+                <div class="dropdown-menu">
+                    <a href="#" class="dropdown-item">Subcategoría 1</a>
+                    <a href="#" class="dropdown-item">Subcategoría 2</a>
+                    <a href="#" class="dropdown-item">Subcategoría 3</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">Baño</a>
+                <div class="dropdown-menu">
+                    <a href="#" class="dropdown-item">Subcategoría 1</a>
+                    <a href="#" class="dropdown-item">Subcategoría 2</a>
+                    <a href="#" class="dropdown-item">Subcategoría 3</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">Juguetería</a>
+                <div class="dropdown-menu">
+                    <a href="#" class="dropdown-item">Subcategoría 1</a>
+                    <a href="#" class="dropdown-item">Subcategoría 2</a>
+                    <a href="#" class="dropdown-item">Subcategoría 3</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">Útiles</a>
+                <div class="dropdown-menu">
+                    <a href="#" class="dropdown-item">Subcategoría 1</a>
+                    <a href="#" class="dropdown-item">Subcategoría 2</a>
+                    <a href="#" class="dropdown-item">Subcategoría 3</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">Jardín</a>
+                <div class="dropdown-menu">
+                    <a href="#" class="dropdown-item">Subcategoría 1</a>
+                    <a href="#" class="dropdown-item">Subcategoría 2</a>
+                    <a href="#" class="dropdown-item">Subcategoría 3</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">Ferretería</a>
+                <div class="dropdown-menu">
+                    <a href="#" class="dropdown-item">Subcategoría 1</a>
+                    <a href="#" class="dropdown-item">Subcategoría 2</a>
+                    <a href="#" class="dropdown-item">Subcategoría 3</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">Celebraciones</a>
+                <div class="dropdown-menu">
+                    <a href="#" class="dropdown-item">Subcategoría 1</a>
+                    <a href="#" class="dropdown-item">Subcategoría 2</a>
+                    <a href="#" class="dropdown-item">Subcategoría 3</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
     );
 };
 
