@@ -3,15 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+    <title>商品管理</title>
 </head>
 <body>
-    <div class="container">
-        <h2>Panel de Administrador</h2>
-        <p>Bienvenido, administrador {{ user.username }}.</p>
-        <p>Aquí puedes gestionar el sistema.</p>
-        <a href="/logout">Cerrar Sesión</a>
-    </div>
+    <h2>商品管理页面</h2>
+
+    <!-- 商品列表 -->
+    <h3>当前商品</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>名称</th>
+                <th>价格</th>
+                <th>类别</th>
+                <th>库存</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.id }}</td>
+                <td>{{ product.title }}</td>
+                <td>{{ product.price }}</td>
+                <!-- Mostrar todas las categorías separadas por comas -->
+                <td>{{ product.categories | join(', ') }}</td>
+                <td>{{ product.quantity }}</td>
+                <td>
+                    <form action="{{ url_for('admin.delete_product', product_id=product.id) }}" method="POST">
+                        <button type="submit">删除</button>
+                    </form>                    
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- 添加商品表单 -->
+    <form action="/admin/add_product" method="POST">
+        <label for="title">商品名称:</label>
+        <input type="text" id="title" name="title"><br><br>
+
+        <label for="price">价格:</label>
+        <input type="text" id="price" name="price"><br><br>
+
+        <label for="category">类别 (多类别请用逗号分隔):</label>
+        <input type="text" id="category" name="category" placeholder="Hogar, Baño"><br><br>
+
+        <label for="imageUrl">图片链接:</label>
+        <input type="text" id="imageUrl" name="imageUrl"><br><br>
+
+        <label for="quantity">库存数量:</label>
+        <input type="text" id="quantity" name="quantity"><br><br>
+
+        <button type="submit">添加商品</button>
+    </form>
+
 </body>
 </html>

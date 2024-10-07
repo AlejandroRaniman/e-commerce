@@ -1,12 +1,13 @@
 import React from 'react';
 import '../styles/Navbar.css'; // Asegúrate de crear este archivo para los estilos
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
     return (
 <nav class="navbar">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a href="#" class="nav-link">Hogar</a>
+            <li><Link to="/hogar" className="nav-link">Hogar</Link></li>  {/* Enlace a la página de Hogar */}
                 <div class="dropdown-menu">
                     <a href="#" class="dropdown-item">Subcategoría 1</a>
                     <a href="#" class="dropdown-item">Subcategoría 2</a>
@@ -14,7 +15,7 @@ const Navbar = () => {
                 </div>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">Cocina</a>
+            <li><Link to="/cocina" className="nav-link">Cocina</Link></li>
                 <div class="dropdown-menu">
                     <a href="#" class="dropdown-item">Subcategoría 1</a>
                     <a href="#" class="dropdown-item">Subcategoría 2</a>
@@ -22,7 +23,7 @@ const Navbar = () => {
                 </div>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">Baño</a>
+            <li><Link to="/baño" className="nav-link">Baño</Link></li>
                 <div class="dropdown-menu">
                     <a href="#" class="dropdown-item">Subcategoría 1</a>
                     <a href="#" class="dropdown-item">Subcategoría 2</a>
@@ -30,7 +31,7 @@ const Navbar = () => {
                 </div>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">Juguetería</a>
+            <li><Link to="/jugueteria" className="nav-link">Jugueteria</Link></li>
                 <div class="dropdown-menu">
                     <a href="#" class="dropdown-item">Subcategoría 1</a>
                     <a href="#" class="dropdown-item">Subcategoría 2</a>
@@ -38,7 +39,7 @@ const Navbar = () => {
                 </div>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">Útiles</a>
+            <li><Link to="/utiles" className="nav-link">Utiles</Link></li>
                 <div class="dropdown-menu">
                     <a href="#" class="dropdown-item">Subcategoría 1</a>
                     <a href="#" class="dropdown-item">Subcategoría 2</a>
@@ -46,7 +47,7 @@ const Navbar = () => {
                 </div>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">Jardín</a>
+            <li><Link to="/jardin" className="nav-link">Jardin</Link></li>
                 <div class="dropdown-menu">
                     <a href="#" class="dropdown-item">Subcategoría 1</a>
                     <a href="#" class="dropdown-item">Subcategoría 2</a>
@@ -54,7 +55,7 @@ const Navbar = () => {
                 </div>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">Ferretería</a>
+            <li><Link to="/ferreteria" className="nav-link">Ferreteria</Link></li>
                 <div class="dropdown-menu">
                     <a href="#" class="dropdown-item">Subcategoría 1</a>
                     <a href="#" class="dropdown-item">Subcategoría 2</a>
@@ -62,7 +63,7 @@ const Navbar = () => {
                 </div>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">Celebraciones</a>
+            <li><Link to="/celebraciones" className="nav-link">Celebracionres</Link></li>
                 <div class="dropdown-menu">
                     <a href="#" class="dropdown-item">Subcategoría 1</a>
                     <a href="#" class="dropdown-item">Subcategoría 2</a>

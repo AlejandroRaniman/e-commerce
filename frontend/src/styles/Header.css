@@ -1,3 +1,4 @@
+/* Estilos para el header en todas las páginas */
 .header {
     background-color: #0033CC; /* Azul oscuro */
     padding: 10px 20px;
@@ -19,6 +20,16 @@
     height: 50px; /* Tamaño de la imagen del logo */
 }
 
+/* Estilos solo para la página de Login */
+.login-header .header-container {
+    justify-content: center; /* Centra el logo */
+}
+
+.login-header .logo-image {
+    height: 100px; /* Aumenta el tamaño del logo solo en la página de Login */
+}
+
+/* Otros estilos generales (barra de búsqueda, login, carrito, etc.) */
 .search-bar {
     display: flex;
     flex: 1;
@@ -76,4 +87,9 @@
 
 .cart-icon:hover {
     color: #FFD700; /* Cambia a color dorado al pasar el mouse */
+}
+.login-header .search-bar,
+.login-header .login-button,
+.login-header .cart-icon {
+  display: none; /* Ocultar estos elementos solo en la página de login o register */
 }

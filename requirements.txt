@@ -11,6 +11,14 @@ jsonify==0.5
 MarkupSafe==2.1.5
 mysqlclient==2.2.4
 Werkzeug==3.0.4
+pip install Flask Flask-CORS
+
+
+#Descargar frontend(Pasos)
+npm install
+#siguiente paso 
+cd frontend
+npm start
 
 # Node
 frontend@1.0.0 D:\E-commerce
