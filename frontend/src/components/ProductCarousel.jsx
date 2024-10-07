@@ -1,9 +1,6 @@
-// src/components/ProductCarousel.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import '../styles/ProductCarousel.css';
-import { FaChevronLeft, FaChevronRight, FaShoppingCart } from 'react-icons/fa';
 
-// Datos simulados para los productos
 const products = [
   {
     name: 'Producto X',
@@ -26,11 +23,11 @@ const products = [
     bulkPrice: 1300,
     image: process.env.PUBLIC_URL + '/assets/product3.jpg',
   },
-  // Agrega más productos si es necesario
 ];
 
 const ProductCarousel = () => {
-  const [currentProduct, setCurrentProduct] = React.useState(0);
+  const [currentProduct, setCurrentProduct] = useState(0);
+  const [quantity, setQuantity] = useState(1);
 
   const nextProduct = () => {
     setCurrentProduct((prevProduct) => (prevProduct + 1) % products.length);
@@ -40,15 +37,21 @@ const ProductCarousel = () => {
     setCurrentProduct((prevProduct) => (prevProduct - 1 + products.length) % products.length);
   };
 
+  const handleQuantityChange = (e) => {
+    setQuantity(Math.max(1, parseInt(e.target.value) || 1));
+  };
+
   return (
     <div className="product-carousel-container">
       <h2>Productos Destacados</h2>
       <div className="product-carousel">
-        <button className="carousel-button prev-button" onClick={prevProduct}>
-          <FaChevronLeft />
+        <button className="carousel-button prev-button" onClick={prevProduct} aria-label="Producto anterior">
+          <i className="bi bi-chevron-left"></i>
         </button>
         <div className="product-carousel-content">
-          <img src={products[currentProduct].image} alt={products[currentProduct].name} />
+          <div className="product-image">
+            <img src={products[currentProduct].image} alt={products[currentProduct].name} />
+          </div>
           <div className="product-info">
             <h3>{products[currentProduct].name}</h3>
             <p>{products[currentProduct].description}</p>
@@ -58,15 +61,22 @@ const ProductCarousel = () => {
             </div>
             <div className="product-quantity">
               <label htmlFor="quantity">Cantidad:</label>
-              <input type="number" id="quantity" name="quantity" min="1" defaultValue="1" />
+              <input 
+                type="number" 
+                id="quantity" 
+                name="quantity" 
+                min="1" 
+                value={quantity}
+                onChange={handleQuantityChange}
+              />
             </div>
             <button className="add-to-cart-button">
-              <FaShoppingCart /> Añadir al Carrito
+              <i className="bi bi-cart-plus"></i> Añadir al Carrito
             </button>
           </div>
         </div>
-        <button className="carousel-button next-button" onClick={nextProduct}>
-          <FaChevronRight />
+        <button className="carousel-button next-button" onClick={nextProduct} aria-label="Siguiente producto">
+          <i className="bi bi-chevron-right"></i>
         </button>
       </div>
       <div className="product-carousel-dots">
@@ -75,6 +85,7 @@ const ProductCarousel = () => {
             key={index}
             className={`dot ${index === currentProduct ? 'active' : ''}`}
             onClick={() => setCurrentProduct(index)}
+            aria-label={`Ir al producto ${index + 1}`}
           ></span>
         ))}
       </div>
