@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../styles/Header.css';
 import { FaSearch, FaUser, FaShoppingCart } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
 
-const Header = () => {
+const Header = ({ toggleNavbar, isNavbarOpen }) => {
     const location = useLocation();
     const hideElements = location.pathname === '/login' || location.pathname === '/register';
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
 
     return (
         <header className={`header ${hideElements ? 'login-header' : ''}`}>
@@ -17,27 +19,27 @@ const Header = () => {
                     </Link>
                 </div>
 
-                {/* Solo muestra la barra de búsqueda, botón de login y carrito si no estás en la página de login o registro */}
                 {!hideElements && (
                     <>
-                        {/* Barra de Búsqueda */}
-                        <div className="search-bar">
+                        {/* Barra de Búsqueda (visible en desktop, toggle en mobile) */}
+                        <div className={`search-bar ${isSearchOpen ? 'active' : ''}`}>
                             <input type="text" placeholder="Buscar" className="search-input" />
                             <button className="search-button">
                                 <FaSearch />
                             </button>
                         </div>
-                        {/* Botón de Login */}
-                        <div className="login-button">
-                            <Link to="/login">
-                                <button className="login">
-                                    <FaUser /> Iniciar
-                                </button>
-                            </Link>
-                        </div>
-                        <div className="cart-icon">
+                        
+                        {/* Iconos para móvil */}
+                        <div className="mobile-icons">
+                            <FaSearch onClick={() => setIsSearchOpen(!isSearchOpen)} />
+                            <Link to="/login"><FaUser /></Link>
                             <FaShoppingCart />
                         </div>
+
+                        {/* Botón de menú para móvil */}
+                        <button className="menu-toggle" onClick={toggleNavbar}>
+                            {isNavbarOpen ? <X size={24} /> : <Menu size={24} />}
+                        </button>
                     </>
                 )}
             </div>

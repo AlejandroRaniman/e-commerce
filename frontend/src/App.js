@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import './styles/index.css'; // Importar estilos globales
 
@@ -30,11 +30,22 @@ const Layout = () => {
     const location = useLocation();
     const hideNavbar = location.pathname === '/login' || location.pathname === '/register';
 
+    const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+    const [activeDropdown, setActiveDropdown] = useState(null);
+
+    const toggleNavbar = () => setIsNavbarOpen(!isNavbarOpen);
+    const toggleDropdown = (label) => setActiveDropdown(activeDropdown === label ? null : label);
+
     return (
         <div className="App">
-            <Header />
-            {/* Mostrar Navbar solo si no estamos en las páginas de login o registro */}
-            {!hideNavbar && <Navbar />}
+            <Header toggleNavbar={toggleNavbar} isNavbarOpen={isNavbarOpen} />
+            {!hideNavbar && (
+                <Navbar 
+                    isOpen={isNavbarOpen} 
+                    toggleDropdown={toggleDropdown} 
+                    activeDropdown={activeDropdown}
+                />
+            )}
 
             <Routes>
                 {/* Página principal */}
@@ -65,7 +76,6 @@ const Layout = () => {
                 <Route path="/register" element={<Register />} />
             </Routes>
 
-            {/* Mostrar Footer solo si no estamos en las páginas de login o registro */}
             {!hideNavbar && <Footer />}
         </div>
     );
