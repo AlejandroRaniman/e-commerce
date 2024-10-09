@@ -29,6 +29,24 @@ const Header = ({ toggleNavbar, isNavbarOpen }) => {
                             </button>
                         </div>
                         
+                        {/* Botón de Login */}
+                        <div className="login-button">
+                            <Link to="/login">
+                                <button className="login">
+                                    <FaUser />
+                                    <span>Iniciar Sesión</span>
+                                </button>
+                            </Link>
+                        </div>
+
+                        {/* Botón de Carrito */}
+                        <div className="cart-icon">
+                            <button className="cart-button">
+                                <FaShoppingCart />
+                                <span>Carrito</span>
+                            </button>
+                        </div>
+
                         {/* Iconos para móvil */}
                         <div className="mobile-icons">
                             <FaSearch onClick={() => setIsSearchOpen(!isSearchOpen)} />

@@ -40,13 +40,44 @@
 }
 
 .login-button, .cart-icon {
-    color: #fff;
-    cursor: pointer;
     margin-left: 20px;
+}
+
+.login, .cart-button {
+    background-color: #ffffff;
+    color: #0033CC;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.login:hover, .cart-button:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.login svg, .cart-button svg {
+    margin-right: 8px;
+    font-size: 18px;
 }
 
 .mobile-icons, .menu-toggle {
     display: none;
+}
+
+@media screen and (max-width: 1024px) {
+    .search-bar {
+        max-width: 300px;
+    }
 }
 
 @media screen and (max-width: 768px) {
@@ -70,10 +101,17 @@
     }
 
     .login-button, .cart-icon {
-        display: none;
+        display: flex;
+        align-items: center;
+        margin-left: 15px;
     }
 
-    .mobile-icons, .menu-toggle {
+    .login, .cart-button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .mobile-icons {
         display: flex;
         align-items: center;
     }
@@ -84,11 +122,23 @@
     }
 
     .menu-toggle {
+        display: flex;
         background: none;
         border: none;
         color: #fff;
         font-size: 24px;
         cursor: pointer;
+        margin-left: 15px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .login-button, .cart-icon {
+        display: none;
+    }
+
+    .mobile-icons {
+        display: flex;
     }
 }
 
