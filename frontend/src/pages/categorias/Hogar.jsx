@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import '../../styles/categorias/Hogar.css';
+
 const Hogar = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [filter, setFilter] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchProducts();
@@ -12,19 +15,19 @@ const Hogar = () => {
   // Obtener los productos desde el backend
   const fetchProducts = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:5000/api/products');
+      setLoading(true);
+      const response = await fetch('http://127.0.0.1:5000/api/productos/Hogar');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      // Filtrar productos para la categoría "Hogar"
-      const categoryProducts = data.filter(
-        product => Array.isArray(product.categories) && product.categories.includes('Hogar')
-      );
-      setProducts(categoryProducts);
-      setFilteredProducts(categoryProducts);
+      setProducts(data);
+      setFilteredProducts(data);
     } catch (error) {
       console.error('Error fetching products:', error);
+      setError('Error al cargar los productos.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -35,9 +38,15 @@ const Hogar = () => {
     setFilteredProducts(
       products.filter(product =>
         product.title.toLowerCase().includes(value) ||
-        product.categories.some(cat => cat.toLowerCase().includes(value))
+        product.categoria.toLowerCase().includes(value)
       )
     );
+  };
+
+  // Limpiar los filtros
+  const clearFilters = () => {
+    setFilter('');
+    setFilteredProducts(products);
   };
 
   return (
@@ -46,45 +55,48 @@ const Hogar = () => {
       <aside className="filter-sidebar">
         <div className="container-filter">
           <h3>Filtros</h3>
-          <a href="#" class name="#">Limpiar Filtros</a>
+          <a href="#" onClick={clearFilters} className="clear-filters">Limpiar Filtros</a>
         </div>
         <div className="filter-group">
-          <h4>Productos</h4>
-          <ul>
-            {/* Aquí puedes agregar más filtros, por ejemplo, por precio o por categorías */}
-            <li>
-              <input type="checkbox" name="filter1" /> Opción 1
-            </li>
-            <li>
-              <input type="checkbox" name="filter2" /> Opción 2
-            </li>
-          </ul>
+          <h4>Filtrar Productos</h4>
+          <input
+            type="text"
+            value={filter}
+            onChange={handleFilterChange}
+            placeholder="Buscar producto..."
+          />
         </div>
       </aside>
 
       {/* Productos */}
       <div className="product-section">
-        <div className="product-grid">
-          {filteredProducts.length > 0 ? (
-            filteredProducts.map((product) => (
-              <div key={product.id} className="product-card">
-                <img src={product.imageUrl} alt={product.title} />
-                <h4>{product.title}</h4>
-                <p>ID: {product.id}</p>
-                <p>价格: {product.price}</p>
-                <p>库存: {product.quantity}</p>
-                <div className="product-actions">
-                  <button>-</button>
-                  <input type="number" defaultValue="1" />
-                  <button>+</button>
-                  <button className="add-to-cart">Añadir al carrito</button>
+        {loading ? (
+          <p>Cargando productos...</p>
+        ) : error ? (
+          <p>{error}</p>
+        ) : (
+          <div className="product-grid">
+            {filteredProducts.length > 0 ? (
+              filteredProducts.map((product) => (
+                <div key={product.id} className="product-card">
+                  <img src={product.imageUrl} alt={product.title} />
+                  <h4>{product.title}</h4>
+                  <p>ID: {product.id}</p>
+                  <p>Precio: {product.price}</p>
+                  <p>Inventario: {product.quantity}</p>
+                  <div className="product-actions">
+                    <button>-</button>
+                    <input type="number" defaultValue="1" />
+                    <button>+</button>
+                    <button className="add-to-cart">Añadir al carrito</button>
+                  </div>
                 </div>
-              </div>
-            ))
-          ) : (
-            <p>没有找到商品。</p>
-          )}
-        </div>
+              ))
+            ) : (
+              <p>No se encontraron productos.</p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
