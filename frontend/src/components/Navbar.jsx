@@ -9,6 +9,7 @@ const NavItem = ({ to, label, subcategories, toggleDropdown, activeDropdown }) =
     <li className="nav-item">
       <Link to={to} className="nav-link" onClick={() => toggleDropdown(label)}>
         {label}
+        {subcategories && <span className="dropdown-arrow"></span>}
       </Link>
       {subcategories && (
         <ul className={`dropdown-menu ${isActive ? 'active' : ''}`}>
