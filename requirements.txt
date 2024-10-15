@@ -12,6 +12,7 @@ MarkupSafe==2.1.5
 mysqlclient==2.2.4
 Werkzeug==3.0.4
 pip install Flask-SQLAlchemy pymysql
+pip install flask-admin
 
 
 pip install Flask Flask-CORS

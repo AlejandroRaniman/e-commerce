@@ -1,66 +1,85 @@
 import React, { useState } from 'react';
-import '../../styles/acc/register.css'; // Asegúrate de crear este archivo CSS
+import '../../styles/acc/register.css';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
-    const [formData, setFormData] = useState({
-        nombre: '',
-        apellido: '',
-        email: '',
-        telefono: '',
-        contraseña: '',
-        confirmarContraseña: '',
-    });
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
-    };
+  const handleRegister = async (e) => {
+    e.preventDefault();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Aquí puedes agregar la lógica para enviar los datos al backend
-        console.log(formData);
-    };
+    try {
+      const response = await fetch('http://127.0.0.1:5000/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+        }),
+      });
 
-    return (
-        <div className="register-page-huamao">
-            <div className="register-container-huamao">
-                <h2>Crea una Cuenta</h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="form-group-huamao">
-                        <label htmlFor="nombre">Nombre</label>
-                        <input type="text" id="nombre" name="nombre" value={formData.nombre} onChange={handleChange} required />
-                    </div>
-                    <div className="form-group-huamao">
-                        <label htmlFor="apellido">Apellido</label>
-                        <input type="text" id="apellido" name="apellido" value={formData.apellido} onChange={handleChange} required />
-                    </div>
-                    <div className="form-group-huamao">
-                        <label htmlFor="email">Correo Electrónico</label>
-                        <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
-                    </div>
-                    <div className="form-group-huamao">
-                        <label htmlFor="telefono">Número de Teléfono</label>
-                        <input type="tel" id="telefono" name="telefono" value={formData.telefono} onChange={handleChange} required />
-                    </div>
-                    <div className="form-group-huamao">
-                        <label htmlFor="contraseña">Contraseña</label>
-                        <input type="password" id="contraseña" name="contraseña" value={formData.contraseña} onChange={handleChange} required />
-                    </div>
-                    <div className="form-group-huamao">
-                        <label htmlFor="confirmarContraseña">Confirmar Contraseña</label>
-                        <input type="password" id="confirmarContraseña" name="confirmarContraseña" value={formData.confirmarContraseña} onChange={handleChange} required />
-                    </div>
-                    <button type="submit" className="register-button-huamao">Registrarse</button>
-                </form>
-                <div className="login-link-huamao">
-                    <p>¿Ya tienes una cuenta? <a href="/login">Inicia sesión</a></p>
-                </div>
-            </div>
+      const data = await response.json();
+
+      if (response.status === 201) {
+        setMessage('Registro exitoso, redirigiendo...');
+        setTimeout(() => {
+          navigate('/signin'); // Redirige al login después de unos segundos
+        }, 2000); // Espera 2 segundos antes de redirigir
+      } else {
+        setMessage(data.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setMessage('Ocurrió un error, intente nuevamente');
+    }
+  };
+
+  return (
+    <div className="register-container">
+      <h2>Registrar Usuario</h2>
+      {message && <p>{message}</p>}
+      <form onSubmit={handleRegister}>
+        <div className="form-group">
+          <label htmlFor="username">Usuario:</label>
+          <input
+            type="text"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
         </div>
-    );
+        <div className="form-group">
+          <label htmlFor="email">Correo electrónico:</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="password">Contraseña:</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit">Registrarse</button>
+      </form>
+    </div>
+  );
 };
 
 export default Register;

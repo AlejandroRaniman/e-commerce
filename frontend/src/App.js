@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import './styles/index.css'; // Importar estilos globales
 
 // Componentes
@@ -11,6 +11,8 @@ import CategoryCarousel from './components/CategoryCarousel';
 import ProductCarousel from './components/ProductCarousel';
 import ProcessFlow from './components/ProcessFlow';
 import Footer from './components/Footer';
+import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider, AuthContext } from './context/AuthContext';
 
 // Categorías
 import Hogar from './pages/categorias/Hogar';
@@ -24,69 +26,87 @@ import Celebraciones from './pages/categorias/Celebraciones';
 
 // Páginas de autenticación
 import SignIn from './pages/acc/SignIn';
+import Dashboard from './pages/Dashboard';
 import Register from './pages/acc/Register';
 
+// Componente Home
+const Home = () => (
+  <>
+    <Carousel />
+    <Section />
+    <CategoryCarousel />
+    <ProductCarousel />
+    <ProcessFlow />
+  </>
+);
+
 const Layout = () => {
-    const location = useLocation();
-    const hideNavbar = location.pathname === '/login' || location.pathname === '/register';
+  const location = useLocation();
+  const hideNavbar = location.pathname === '/signin' || location.pathname === '/register';
 
-    const [isNavbarOpen, setIsNavbarOpen] = useState(false);
-    const [activeDropdown, setActiveDropdown] = useState(null);
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const { user } = useContext(AuthContext); // Obtener el usuario desde el contexto
 
-    const toggleNavbar = () => setIsNavbarOpen(!isNavbarOpen);
-    const toggleDropdown = (label) => setActiveDropdown(activeDropdown === label ? null : label);
+  const toggleNavbar = () => setIsNavbarOpen(!isNavbarOpen);
+  const toggleDropdown = (label) => setActiveDropdown(activeDropdown === label ? null : label);
 
-    return (
-        <div className="App">
-            <Header toggleNavbar={toggleNavbar} isNavbarOpen={isNavbarOpen} />
-            {!hideNavbar && (
-                <Navbar 
-                    isOpen={isNavbarOpen} 
-                    toggleDropdown={toggleDropdown} 
-                    activeDropdown={activeDropdown}
-                />
-            )}
+  return (
+    <div className="App">
+      <Header toggleNavbar={toggleNavbar} isNavbarOpen={isNavbarOpen} />
+      {!hideNavbar && (
+        <Navbar
+          isOpen={isNavbarOpen}
+          toggleDropdown={toggleDropdown}
+          activeDropdown={activeDropdown}
+        />
+      )}
 
-            <Routes>
-                {/* Página principal */}
-                <Route
-                    path="/"
-                    element={
-                        <>
-                            <Carousel />
-                            <Section />
-                            <CategoryCarousel />
-                            <ProductCarousel />
-                            <ProcessFlow />
-                        </>
-                    }
-                />
-                {/* Rutas para las categorías */}
-                <Route path="/hogar" element={<Hogar />} />
-                <Route path="/cocina" element={<Cocina />} />
-                <Route path="/baño" element={<Baño />} />
-                <Route path="/jugueteria" element={<Jugueteria />} />
-                <Route path="/utiles" element={<Utiles />} />
-                <Route path="/jardin" element={<Jardin />} />
-                <Route path="/ferreteria" element={<Ferreteria />} />
-                <Route path="/celebraciones" element={<Celebraciones />} />
+      <Routes>
+        <Route path="/" element={<Home />} />
 
-                {/* Rutas para las páginas de Login y Registro */}
-                <Route path="/login" element={<SignIn />} />
-                <Route path="/register" element={<Register />} />
-            </Routes>
+        {/* Rutas para las categorías */}
+        <Route path="/hogar" element={<Hogar />} />
+        <Route path="/cocina" element={<Cocina />} />
+        <Route path="/baño" element={<Baño />} />
+        <Route path="/jugueteria" element={<Jugueteria />} />
+        <Route path="/utiles" element={<Utiles />} />
+        <Route path="/jardin" element={<Jardin />} />
+        <Route path="/ferreteria" element={<Ferreteria />} />
+        <Route path="/celebraciones" element={<Celebraciones />} />
 
-            {!hideNavbar && <Footer />}
-        </div>
-    );
+        {/* Rutas para las páginas de Login y Registro */}
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/register" element={<Register />} />
+
+        {/* Ruta protegida para el Dashboard */}
+        <Route
+          path="/dashboard"
+          element={
+            user && user.role === 'admin' ? (
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            ) : (
+              <div>No tienes permisos para acceder a esta página.</div>
+            )
+          }
+        />
+      </Routes>
+
+      {!hideNavbar && <Footer />}
+    </div>
+  );
 };
 
 function App() {
-    return (
-        <Router>
-            <Layout />
-        </Router>
-    );
+  return (
+    <AuthProvider>
+      <Router>
+        <Layout />
+      </Router>
+    </AuthProvider>
+  );
 }
 
 export default App;

@@ -1,35 +1,37 @@
 import React, { useEffect, useState } from 'react';
-
+import { getProductsByCategory } from '../../api/apiClient';
 
 const Baño = () => {
-    const [productos, setProductos] = useState([]);
+  const [products, setProducts] = useState([]);
 
-    useEffect(() => {
-        // Solicitar productos desde el backend
-        axios.get('/api/productos/Baño')
-            .then(response => {
-                setProductos(response.data);
-            })
-            .catch(error => {
-                console.error('Error al obtener los productos:', error);
-            });
-    }, []);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const productsData = await getProductsByCategory('baño');
+        setProducts(productsData);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
 
-    return (
-        <div>
-            <h1>Productos de Baño</h1>
-            <div className="productos">
-                {productos.map((producto) => (
-                    <div key={producto.id} className="producto">
-                        <h2>{producto.title}</h2>
-                        <p>Categoría: {producto.categoria}</p>
-                        <p>Precio: ${producto.price}</p>
-                        <p>Cantidad: {producto.quantity}</p>
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
+    fetchProducts();
+  }, []);
+
+  return (
+    <div>
+      <h2>Productos para el Baño</h2>
+      <div className="products-grid">
+        {products.map((product) => (
+          <div key={product.id} className="product-item">
+            <h3>{product.name}</h3>
+            <p>{product.description}</p>
+            <p>Precio: ${product.price}</p>
+            {product.image_url && <img src={product.image_url} alt={product.name} />}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default Baño;

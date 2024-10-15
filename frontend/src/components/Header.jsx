@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import '../styles/Header.css';
 import { FaSearch, FaUser, FaShoppingCart } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+import { AuthContext } from '../context/AuthContext';
 
 const Header = ({ toggleNavbar, isNavbarOpen }) => {
     const location = useLocation();
     const hideElements = location.pathname === '/login' || location.pathname === '/register';
     const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const { user, logout } = useContext(AuthContext); // Obtener el usuario y la función de logout
 
     return (
         <header className={`header ${hideElements ? 'login-header' : ''}`}>
@@ -30,12 +32,19 @@ const Header = ({ toggleNavbar, isNavbarOpen }) => {
                         </div>
 
                         <div className="header-right">
-                            <Link to="/login" className="login-button">
-                                <button className="login">
-                                    <FaUser />
-                                    <span>Iniciar Sesión</span>
-                                </button>
-                            </Link>
+                            {user ? (
+                                <div className="user-info">
+                                    <span>Hola, {user.username}</span>
+                                    <button onClick={logout} className="logout-button">Cerrar Sesión</button>
+                                </div>
+                            ) : (
+                                <Link to="/signin" className="login-button">
+                                    <button className="login">
+                                        <FaUser />
+                                        <span>Iniciar Sesión</span>
+                                    </button>
+                                </Link>
+                            )}
 
                             <button className="cart-button">
                                 <FaShoppingCart />
