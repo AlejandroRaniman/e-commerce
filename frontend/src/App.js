@@ -13,6 +13,9 @@ import ProcessFlow from './components/ProcessFlow';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider, AuthContext } from './context/AuthContext';
+import Carro from './pages/Carro';
+import Checkout from './pages/Checkout'; // Asegúrate de que la ruta sea correcta
+
 
 // Categorías
 import Hogar from './pages/categorias/Hogar';
@@ -68,12 +71,21 @@ const Layout = () => {
         {/* Rutas para las categorías */}
         <Route path="/hogar" element={<Hogar />} />
         <Route path="/cocina" element={<Cocina />} />
-        <Route path="/baño" element={<Baño />} />
+        <Route path="/bano" element={<Baño />} />
         <Route path="/jugueteria" element={<Jugueteria />} />
         <Route path="/utiles" element={<Utiles />} />
         <Route path="/jardin" element={<Jardin />} />
         <Route path="/ferreteria" element={<Ferreteria />} />
         <Route path="/celebraciones" element={<Celebraciones />} />
+        <Route path="/carro" element={<Carro />} />
+        <Route path="/checkout" element={<Checkout />} />
+       
+
+       
+  
+       
+  
+
 
         {/* Rutas para las páginas de Login y Registro */}
         <Route path="/signin" element={<SignIn />} />

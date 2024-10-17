@@ -16,7 +16,7 @@ const Hogar = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://127.0.0.1:5000/api/productos/Hogar');
+        const response = await fetch('http://127.0.0.1:5000/products/Hogar');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -79,7 +79,7 @@ const Hogar = () => {
             {filteredProducts.length > 0 ? (
               filteredProducts.map((product) => (
                 <div key={product.id} className="product-card">
-                  <img src={product.imageUrl} alt={product.title} />
+                  <img src={`http://127.0.0.1:5000/static/images/${product.image_url}`} alt={product.title} />
                   <h4>{product.title}</h4>
                   <p>ID: {product.id}</p>
                   <p>Precio: {product.price}</p>

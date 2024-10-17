@@ -46,11 +46,11 @@ const Header = ({ toggleNavbar, isNavbarOpen }) => {
                                 </Link>
                             )}
 
-                            <button className="cart-button">
-                                <FaShoppingCart />
-                                <span>Carrito</span>
-                            </button>
-
+                            <Link to="/carro">
+                                <button className="cart-button">
+                                     <FaShoppingCart />
+                                        </button>
+                            </Link>
                             <div className="mobile-controls">
                                 <button className="mobile-search" onClick={() => setIsSearchOpen(!isSearchOpen)}>
                                     <FaSearch />

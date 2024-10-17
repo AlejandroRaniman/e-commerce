@@ -76,9 +76,9 @@
                             </td>
                             <td>
                                 <a href="/admin/productos/edit/{{ product.id }}" class="edit-button">Editar</a>
-                                <form action="/admin/productos/delete/{{ product.id }}" method="POST" class="delete-form">
+                                <form action="/products/admin/productos/delete/{{ product.id }}" method="POST" class="delete-form">
                                     <button type="submit" class="delete-button">Eliminar</button>
-                                </form>
+                                </form>                                
                             </td>
                         </tr>
                         {% endfor %}
