@@ -12,7 +12,8 @@ from flask_migrate import Migrate
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}},
-     supports_credentials=True, allow_headers=["Content-Type", "Authorization", "Access-Control-Allow-Credentials"])
+    supports_credentials=True)
+
 
 # Configuración de la base de datos
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Emonight00.@localhost:3306/Commerce'

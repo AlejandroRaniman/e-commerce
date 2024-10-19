@@ -15,17 +15,15 @@ const Carro = () => {
   const fetchCartItems = async () => {
     try {
       setLoading(true);
-      const sessionId = localStorage.getItem('session_id');
-      if (!sessionId) {
-        setError('No hay carrito disponible.');
-        setLoading(false);
-        return;
-      }
+      const response = await fetch('http://127.0.0.1:5000/cart/items', {
+        method: 'GET',
+        credentials: 'include', // Esto permite enviar cookies de sesión
+      });
 
-      const response = await fetch(`http://127.0.0.1:5000/cart/items?session_id=${sessionId}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+
       const data = await response.json();
       setProducts(data);
     } catch (error) {
@@ -33,6 +31,52 @@ const Carro = () => {
       setError('Error al cargar los productos.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleRemoveItem = async (itemId) => {
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/cart/remove/${itemId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        alert('Producto eliminado del carrito');
+        fetchCartItems(); // Refresca los productos del carrito después de eliminar uno
+      } else {
+        const data = await response.json();
+        alert(`Error: ${data.message}`);
+      }
+    } catch (error) {
+      console.error('Error al eliminar el producto del carrito:', error);
+    }
+  };
+
+  const handleUpdateQuantity = async (itemId, newQuantity) => {
+    try {
+      if (newQuantity <= 0) {
+        alert('La cantidad debe ser mayor que cero');
+        return;
+      }
+
+      const response = await fetch(`http://127.0.0.1:5000/cart/update/${itemId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ quantity: newQuantity }),
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        fetchCartItems(); // Refresca los productos del carrito después de actualizar la cantidad
+      } else {
+        const data = await response.json();
+        alert(`Error: ${data.message}`);
+      }
+    } catch (error) {
+      console.error('Error al actualizar la cantidad del producto:', error);
     }
   };
 
@@ -57,24 +101,48 @@ const Carro = () => {
         ) : error ? (
           <p className="error">{error}</p>
         ) : (
-          products.map((product) => (
-            <div key={product.id} className="producto-item">
-              <img src={product.imageUrl} alt={product.title} className="product-image" />
-              <div className="product-details">
-                <p className="product-title">{product.title}</p>
-                <p className="product-price">$ {product.price}</p>
-              </div>
-              <div className="product-subtotal">
-                <p>Subtotal: $ {product.price * 1}</p>
-                <div className="product-actions">
-                  <button className="quantity-btn">-</button>
-                  <input type="number" defaultValue="1" className="quantity-input" />
-                  <button className="quantity-btn">+</button>
-                  <button className="remove-btn">✖</button>
+          products.length > 0 ? (
+            products.map((product) => (
+              <div key={product.id} className="producto-item">
+                <img src={product.image_url || 'placeholder.png'} alt={product.product_name} className="product-image" />
+                <div className="product-details">
+                  <p className="product-title">{product.product_name}</p>
+                  <p className="product-price">Precio: $ {product.price}</p>
+                </div>
+                <div className="product-subtotal">
+                  <p>Subtotal: $ {product.price * product.quantity}</p>
+                  <div className="product-actions">
+                    <button
+                      className="quantity-btn"
+                      onClick={() => handleUpdateQuantity(product.id, product.quantity - 1)}
+                    >
+                      -
+                    </button>
+                    <input
+                      type="number"
+                      value={product.quantity}
+                      readOnly
+                      className="quantity-input"
+                    />
+                    <button
+                      className="quantity-btn"
+                      onClick={() => handleUpdateQuantity(product.id, product.quantity + 1)}
+                    >
+                      +
+                    </button>
+                    <button
+                      className="remove-btn"
+                      onClick={() => handleRemoveItem(product.id)}
+                    >
+                      ✖
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))
+            ))
+          ) : (
+            <p>No se encontraron productos en el carrito.</p>
+          )
         )}
       </div>
 
@@ -82,9 +150,9 @@ const Carro = () => {
       <div className="resumen-compra">
         <h3>Resumen de la compra</h3>
         <div className="resumen-details">
-          <p>Productos(X): $xxxxxxx</p>
-          <p>Descuentos(X): $-xxxxxxx</p>
-          <p className="total">Total: $xxxxxxxx</p>
+          <p>Productos({products.length}): $ {products.reduce((total, product) => total + product.price * product.quantity, 0)}</p>
+          <p>Descuentos(X): $ 0</p> {/* Puedes implementar lógica de descuento si es necesario */}
+          <p className="total">Total: $ {products.reduce((total, product) => total + product.price * product.quantity, 0)}</p>
           <button className="checkout-btn" onClick={handleCheckout}>
             Realizar pago
           </button>

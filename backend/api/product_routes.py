@@ -107,19 +107,9 @@ def get_all_products():
 # Ruta para obtener productos por categoría (para React)
 @product_blueprint.route('/<category>', methods=['GET'])
 def get_products_by_category(category):
-    products = Product.query.filter_by(category=category).all()
-    if not products:
-        return jsonify({'message': 'No se encontraron productos para la categoría especificada.'}), 404
-
-    products_data = [
-        {
-            "id": product.id,
-            "name": product.name,
-            "description": product.description,
-            "price": product.price,
-            "category": product.category,
-            "image_url": product.image_url
-        }
-        for product in products
-    ]
-    return jsonify(products_data), 200
+    try:
+        products = Product.query.filter_by(category=category).all()
+        products_data = [product.to_dict() for product in products]
+        return jsonify(products_data), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500

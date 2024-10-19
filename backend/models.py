@@ -18,8 +18,9 @@ class Product(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     image_url = db.Column(db.String(255), nullable=True)
 
+    cart_items = db.relationship('CartItem', back_populates='product')
+
     def to_dict(self):
-        # Añadir este método para facilitar la conversión a JSON
         return {
             'id': self.id,
             'name': self.name,
@@ -33,8 +34,8 @@ class Product(db.Model):
 class CartItem(db.Model):
     __tablename__ = 'cart_items'
     id = db.Column(db.Integer, primary_key=True)
+    session_id = db.Column(db.String(100), nullable=True)  # Añade este campo
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
 
-    # Relación corregida para aclarar cómo SQLAlchemy debe interpretar la unión
-    product = db.relationship('Product', backref=db.backref('cart_items', lazy=True))
+    product = db.relationship('Product', back_populates='cart_items')

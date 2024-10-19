@@ -19,53 +19,53 @@ const Hogar = () => {
         throw new Error(`HTTP error: ${response.status}`);
       }
       const data = await response.json();
-      console.log('Productos cargados:', data); // Log para verificar los productos
+      console.log('Productos cargados:', data); // Verifica los productos en la consola
       setProducts(data);
-      setFilteredProducts(data);  // Establecer productos filtrados igual a los productos iniciales
-      setLoading(false); // Agregar esto para terminar la carga
+      setFilteredProducts(data);
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching products:', error);
       setError('Error al cargar los productos.');
-      setLoading(false); // Asegúrate de finalizar la carga también cuando hay error
+      setLoading(false);
     }
   };
-  
 
-  const addToCart = async (productId, quantity) => {
+  const handleAddToCart = async (productId, quantity) => {
     try {
-      let sessionId = localStorage.getItem('session_id');
-      if (!sessionId) {
-        sessionId = generateSessionId(); // Genera un nuevo ID único
-        localStorage.setItem('session_id', sessionId);
-      }
-
       const response = await fetch('http://127.0.0.1:5000/cart/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          product_id: productId,
-          quantity: quantity,
-          session_id: sessionId,
-        }),
+        body: JSON.stringify({ product_id: productId, quantity: quantity }),
+        credentials: 'include', // Para enviar la cookie de sesión
       });
-      
 
-      if (!response.ok) {
-        throw new Error('Error al añadir el producto al carrito');
+      if (response.ok) {
+        alert('Producto añadido al carrito con éxito');
+      } else {
+        const data = await response.json();
+        alert(`Error: ${data.message}`);
       }
-
-      const data = await response.json();
-      alert(data.message);
     } catch (error) {
       console.error('Error al añadir al carrito:', error);
-      alert('Error al añadir el producto al carrito.');
     }
   };
 
   const generateSessionId = () => {
     return 'session-' + Math.random().toString(36).substr(2, 9);
+  };
+
+  const handleQuantityChange = (productId, delta) => {
+    setFilteredProducts((prevProducts) =>
+      prevProducts.map((product) => {
+        if (product.id === productId) {
+          const updatedQuantity = Math.max((product.selectedQuantity || 1) + delta, 1);
+          return { ...product, selectedQuantity: updatedQuantity };
+        }
+        return product;
+      })
+    );
   };
 
   return (
@@ -116,17 +116,16 @@ const Hogar = () => {
                   <p>Precio: {product.price}</p>
                   <p>Inventario: {product.quantity || 'N/A'}</p>
                   <div className="product-actions">
-                    <button>-</button>
-                    <input type="number" defaultValue="1" id={`quantity-${product.id}`} />
-                    <button>+</button>
+                    <button onClick={() => handleQuantityChange(product.id, -1)}>-</button>
+                    <input
+                      type="number"
+                      value={product.selectedQuantity || 1}
+                      readOnly
+                    />
+                    <button onClick={() => handleQuantityChange(product.id, 1)}>+</button>
                     <button
                       className="add-to-cart"
-                      onClick={() => {
-                        const quantity = parseInt(
-                          document.getElementById(`quantity-${product.id}`).value
-                        );
-                        addToCart(product.id, quantity);
-                      }}
+                      onClick={() => handleAddToCart(product.id, product.selectedQuantity || 1)}
                     >
                       Añadir al carrito
                     </button>
@@ -144,3 +143,4 @@ const Hogar = () => {
 };
 
 export default Hogar;
+
