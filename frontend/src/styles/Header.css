@@ -17,15 +17,23 @@
     align-items: center;
 }
 
+.header-left, .header-right {
+    flex: 1;
+}
+
+.header-center {
+    flex: 2;
+    justify-content: center;
+}
+
 .logo-image {
     height: 50px;
 }
 
 .search-bar {
     display: flex;
-    flex: 1;
-    max-width: 500px;
-    margin: 0 20px;
+    max-width: 300px;
+    margin: 0 auto;
 }
 
 .search-input {
@@ -44,7 +52,8 @@
     cursor: pointer;
 }
 
-.login-button {
+.login-link {
+    text-decoration: none;
     margin-right: 20px;
 }
 
@@ -73,6 +82,10 @@
 .login svg {
     margin-right: 8px;
     font-size: 18px;
+}
+
+.cart-link {
+    text-decoration: none;
 }
 
 .cart-button {
@@ -106,9 +119,30 @@
     display: none;
 }
 
+.auth-header .header-container {
+    justify-content: center;
+}
+
+.auth-header .header-left,
+.auth-header .header-right {
+    display: none;
+}
+
+.auth-header .header-center {
+    flex: 1;
+}
+
+.centered-logo {
+    justify-content: center;
+}
+
+.hidden {
+    display: none;
+}
+
 @media screen and (max-width: 1024px) {
     .search-bar {
-        max-width: 300px;
+        max-width: 200px;
     }
 }
 
@@ -117,22 +151,28 @@
         flex-wrap: wrap;
     }
 
+    .header-left, .header-right {
+        flex: none;
+        width: auto;
+    }
+
     .header-center {
-        order: 3;
+        order: 2;
         width: 100%;
+        justify-content: center;
         margin-top: 10px;
     }
 
     .search-bar {
         max-width: 100%;
-        margin: 0;
+        margin: 10px 0;
     }
 
     .search-bar:not(.active) {
         display: none;
     }
 
-    .login-button, .cart-button {
+    .login-link, .cart-link {
         display: none;
     }
 
@@ -154,11 +194,9 @@
         padding: 8px 16px;
         font-size: 14px;
     }
-}
 
-.login-header .search-bar,
-.login-header .login-button,
-.login-header .cart-button,
-.login-header .mobile-controls {
-    display: none;
+    .auth-header .header-center {
+        order: 0;
+        margin-bottom: 0;
+    }
 }

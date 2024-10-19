@@ -85,6 +85,14 @@
     background-color: #f1f1f1;
 }
 
+@media screen and (min-width: 769px) {
+    .nav-item:hover .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+}
+
 @media screen and (max-width: 768px) {
     .navbar {
         display: none;

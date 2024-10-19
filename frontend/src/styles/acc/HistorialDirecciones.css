@@ -1,0 +1,102 @@
+/* HistorialDirecciones.css */
+.historial-direcciones-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f4f6f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .titulo-historial {
+    text-align: center;
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .direccion-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .direccion-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .direccion-card:hover {
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  }
+  
+  .direccion-titulo {
+    color: #007bff;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .direccion-detalles p {
+    margin: 5px 0;
+    color: #555;
+  }
+  
+  .boton-contenedor {
+    display: flex;
+    align-items: flex-start;
+  }
+  
+  .editar-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .editar-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Nueva sección para agregar dirección */
+  .nueva-direccion-card {
+    text-align: center;
+    padding: 20px;
+    border: 2px dashed #007bff;
+    border-radius: 10px;
+    background-color: #eef4fb;
+    transition: background-color 0.3s ease, border 0.3s ease;
+  }
+  
+  .nueva-direccion-card:hover {
+    background-color: #dfe9f7;
+    border: 2px solid #007bff;
+  }
+  
+  .agregar-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .agregar-btn:hover {
+    background-color: #0056b3;
+  }
+  

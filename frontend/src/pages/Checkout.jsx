@@ -1,7 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../styles/Checkout.css';
 
+// Componente Modal
+const Modal = ({ show, onClose, children }) => {
+  if (!show) return null;
+
+  return (
+    <div className="modal-overlay">
+      <div className="modal">
+        <button className="close-btn" onClick={onClose}>✖</button>
+        <div className="modal-content">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Checkout = () => {
+  // Estado para controlar la visibilidad del modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Función para abrir/cerrar el modal
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
   return (
     <div className="checkout-container">
       {/* Sección de direcciones */}
@@ -15,7 +39,8 @@ const Checkout = () => {
             <button className="edit-btn">✏️</button>
           </div>
           <button className="edit-link">Editar</button>
-          <button className="add-link">+ Añadir Nueva Dirección</button>
+          {/* Abrir modal al hacer clic en "Añadir Nueva Dirección" */}
+          <button className="add-link" onClick={toggleModal}>+ Añadir Nueva Dirección</button>
         </div>
 
         <div className="address-card">
@@ -27,9 +52,45 @@ const Checkout = () => {
             <button className="edit-btn">✏️</button>
           </div>
           <button className="edit-link">Editar</button>
-          <button className="add-link">+ Añadir Nueva Dirección</button>
+          <button className="add-link" onClick={toggleModal}>+ Añadir Nueva Dirección</button>
         </div>
       </div>
+
+      {/* Modal para añadir nueva dirección */}
+      <Modal show={isModalOpen} onClose={toggleModal}>
+        <h2>Añadir Nueva Dirección</h2>
+        <form className="add-address-form">
+          <div className="form-group">
+            <label htmlFor="recipient">Nombre del destinatario:</label>
+            <input type="text" id="recipient" placeholder="Nombre completo" />
+          </div>
+          <div className="form-group">
+            <label htmlFor="phone">Teléfono:</label>
+            <input type="tel" id="phone" placeholder="Teléfono" />
+          </div>
+          <div className="form-group">
+            <label htmlFor="rut">RUT:</label>
+            <input type="text" id="rut" placeholder="RUT" />
+          </div>
+          <div className="form-group">
+            <label htmlFor="region">Región:</label>
+            <input type="text" id="region" placeholder="Región" />
+          </div>
+          <div className="form-group">
+            <label htmlFor="comuna">Comuna:</label>
+            <input type="text" id="comuna" placeholder="Comuna" />
+          </div>
+          <div className="form-group">
+            <label htmlFor="street">Calle y número:</label>
+            <input type="text" id="street" placeholder="Calle y número" />
+          </div>
+          <div className="form-group">
+            <label htmlFor="extra-info">Dpto/Casa/Oficina/Condominio (Opcional):</label>
+            <input type="text" id="extra-info" placeholder="Opcional" />
+          </div>
+          <button type="submit" className="submit-btn">Guardar Dirección</button>
+        </form>
+      </Modal>
 
       {/* Métodos de pago */}
       <div className="payment-section">
@@ -42,7 +103,6 @@ const Checkout = () => {
           <input type="radio" id="transfer" name="payment-method" value="Transferencia" />
           <label htmlFor="transfer">Transferencia Bancaria</label>
         </div>
-
         <textarea
           className="special-instructions"
           placeholder="Introduce las instrucciones especiales para tu pedido (Opcional)"

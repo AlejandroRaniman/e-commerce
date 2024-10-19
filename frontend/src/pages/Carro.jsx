@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importamos useNavigate
+import { useNavigate } from 'react-router-dom';
 import '../styles/Carro.css';
 
 const Carro = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const navigate = useNavigate(); // Instancia de useNavigate
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchProducts();
+    fetchCartItems();
   }, []);
 
-  const fetchProducts = async () => {
+  const fetchCartItems = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://127.0.0.1:5000/api/productos/Carro');
+      const sessionId = localStorage.getItem('session_id');
+      if (!sessionId) {
+        setError('No hay carrito disponible.');
+        setLoading(false);
+        return;
+      }
+
+      const response = await fetch(`http://127.0.0.1:5000/cart/items?session_id=${sessionId}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -31,8 +37,15 @@ const Carro = () => {
   };
 
   const handleCheckout = () => {
-    // Redirigir a la página de métodos de pago y dirección de envío
-    navigate('/Checkout'); // Cambiar a la ruta correcta
+    // Verificar si el usuario está autenticado
+    const isAuthenticated = Boolean(localStorage.getItem('auth_token')); // Ejemplo de verificación
+    if (!isAuthenticated) {
+      alert('Debe iniciar sesión para continuar con el pago.');
+      navigate('/login');
+    } else {
+      // Continuar con el proceso de pago
+      navigate('/checkout');
+    }
   };
 
   return (

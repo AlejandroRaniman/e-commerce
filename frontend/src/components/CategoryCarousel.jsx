@@ -1,24 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/CategoryCarousel.css';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 const categories = [
-  { name: 'Escolar', image: process.env.PUBLIC_URL + '/assets/escolar.jpg' },
-  { name: 'Regalo', image: process.env.PUBLIC_URL + '/assets/regalo.jpg' },
-  { name: 'Ferretería', image: process.env.PUBLIC_URL + '/assets/ferreteria.jpg' },
-  { name: 'Tecnología', image: process.env.PUBLIC_URL + '/assets/tecnologia.jpg' },
-  { name: 'Hogar', image: process.env.PUBLIC_URL + '/assets/hogar.jpg' },
+  { label: "Escolar", image: process.env.PUBLIC_URL + '/assets/escolar.jpg' },
+  { label: "Regalo", image: process.env.PUBLIC_URL + '/assets/regalo.jpg' },
+  { label: "Ferretería", image: process.env.PUBLIC_URL + '/assets/ferreteria.jpg' },
+  { label: "Hogar", image: process.env.PUBLIC_URL + '/assets/hogar.jpg' },
+  { label: "Cocina", image: process.env.PUBLIC_URL + '/assets/cocina.jpg' },
+  { label: "Baño", image: process.env.PUBLIC_URL + '/assets/bano.jpg' },
 ];
 
 const CategoryCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [direction, setDirection] = useState('');
 
   const nextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % categories.length);
+    if (!isAnimating) {
+      setDirection('next');
+      setIsAnimating(true);
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % categories.length);
+    }
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + categories.length) % categories.length);
+    if (!isAnimating) {
+      setDirection('prev');
+      setIsAnimating(true);
+      setCurrentIndex((prevIndex) => (prevIndex - 1 + categories.length) % categories.length);
+    }
+  };
+
+  useEffect(() => {
+    if (isAnimating) {
+      const timer = setTimeout(() => {
+        setIsAnimating(false);
+      }, 500); // Match this with your CSS transition time
+      return () => clearTimeout(timer);
+    }
+  }, [isAnimating]);
+
+  const getVisibleCategories = () => {
+    const visibleCategories = [];
+    for (let i = 0; i < 3; i++) {
+      const index = (currentIndex + i) % categories.length;
+      visibleCategories.push(categories[index]);
+    }
+    return visibleCategories;
   };
 
   return (
@@ -28,28 +57,15 @@ const CategoryCarousel = () => {
         <button className="carousel-button prev-button" onClick={prevSlide}>
           <FaChevronLeft />
         </button>
-        <div className="category-slider">
-          {categories.map((category, index) => {
-            let position = index - currentIndex;
-            if (position < 0) position = categories.length + position;
-            return (
-              <div
-                key={index}
-                className={`category-item ${position === 1 ? 'active' : ''} ${
-                  position === 0 || position === 2 ? 'adjacent' : ''
-                }`}
-                style={{
-                  transform: `translateX(${(position - 1) * 100}%)`,
-                  opacity: position >= 0 && position <= 2 ? 1 : 0,
-                }}
-              >
-                <div className="category-card">
-                  <img src={category.image} alt={category.name} />
-                  <p>{category.name}</p>
-                </div>
+        <div className={`category-slider ${isAnimating ? `animating ${direction}` : ''}`}>
+          {getVisibleCategories().map((category, index) => (
+            <div key={index} className="category-item">
+              <div className="category-card">
+                <img src={category.image} alt={category.label} />
+                <p>{category.label}</p>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
         <button className="carousel-button next-button" onClick={nextSlide}>
           <FaChevronRight />

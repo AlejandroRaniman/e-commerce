@@ -27,10 +27,16 @@ import Jardin from './pages/categorias/Jardin';
 import Ferreteria from './pages/categorias/Ferreteria';
 import Celebraciones from './pages/categorias/Celebraciones';
 
+
 // Páginas de autenticación
 import SignIn from './pages/acc/SignIn';
 import Dashboard from './pages/Dashboard';
 import Register from './pages/acc/Register';
+import Miperfil from './pages/acc/Miperfil';
+import HistorialDirecciones from './pages/acc/HistorialDirecciones';
+
+
+
 
 // Componente Home
 const Home = () => (
@@ -79,18 +85,14 @@ const Layout = () => {
         <Route path="/celebraciones" element={<Celebraciones />} />
         <Route path="/carro" element={<Carro />} />
         <Route path="/checkout" element={<Checkout />} />
-       
 
-       
-  
-       
-  
 
 
         {/* Rutas para las páginas de Login y Registro */}
         <Route path="/signin" element={<SignIn />} />
         <Route path="/register" element={<Register />} />
-
+        <Route path="/miperfil" element={<Miperfil />} />
+        <Route path="/historial-direcciones" element={<HistorialDirecciones />} />
         {/* Ruta protegida para el Dashboard */}
         <Route
           path="/dashboard"

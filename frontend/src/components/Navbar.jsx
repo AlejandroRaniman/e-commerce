@@ -1,18 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Navbar.css';
 
 const NavItem = ({ to, label, subcategories, toggleDropdown, activeDropdown }) => {
+  const [isHovered, setIsHovered] = useState(false);
   const isActive = activeDropdown === label;
 
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
+  const handleClick = (e) => {
+    if (window.innerWidth <= 768) {
+      e.preventDefault();
+      toggleDropdown(label);
+    }
+  };
+
   return (
-    <li className="nav-item">
-      <Link to={to} className="nav-link" onClick={() => toggleDropdown(label)}>
+    <li 
+      className="nav-item" 
+      onMouseEnter={handleMouseEnter} 
+      onMouseLeave={handleMouseLeave}
+    >
+      <Link 
+        to={to} 
+        className="nav-link" 
+        onClick={handleClick}
+      >
         {label}
         {subcategories && <span className="dropdown-arrow"></span>}
       </Link>
       {subcategories && (
-        <ul className={`dropdown-menu ${isActive ? 'active' : ''}`}>
+        <ul className={`dropdown-menu ${isHovered || isActive ? 'active' : ''}`}>
           {subcategories.map((subcat, index) => (
             <li key={index}>
               <Link 
