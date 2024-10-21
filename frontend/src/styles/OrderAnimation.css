@@ -1,0 +1,83 @@
+.order-container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .order-button {
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  .animation-container {
+    position: relative;
+    width: 400px;
+    height: 200px;
+    margin: 50px auto;
+  }
+  
+  .box {
+    width: 50px;
+    height: 50px;
+    background-color: #f39c12;
+    position: absolute;
+    top: 75px;
+    left: 0;
+    animation: moveBox 5s ease-in-out forwards;
+  }
+  
+  .truck {
+    position: absolute;
+    right: 0;
+    top: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 50px;
+  }
+  
+  .truck-body {
+    width: 70px;
+    height: 40px;
+    background-color: #3498db;
+    border-radius: 5px;
+    position: relative;
+  }
+  
+  .truck-wheel {
+    width: 20px;
+    height: 20px;
+    background-color: #333;
+    border-radius: 50%;
+    position: absolute;
+    bottom: -10px;
+  }
+  
+  .truck-wheel:first-child {
+    left: 5px;
+  }
+  
+  .truck-wheel:last-child {
+    right: 5px;
+  }
+  
+  @keyframes moveBox {
+    0% {
+      left: 0;
+    }
+    100% {
+      left: 350px;
+    }
+  }
+  
+  .confirmation-message {
+    margin-top: 50px;
+    font-size: 24px;
+    color: #28a745;
+  }
+  

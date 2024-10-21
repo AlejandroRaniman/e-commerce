@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'; // Importar Link para la navegación
 import '../../styles/acc/Miperfil.css';
 
 const MiPerfil = () => {
@@ -22,23 +23,21 @@ const MiPerfil = () => {
   };
 
   const handleSave = () => {
-    // Aquí puedes implementar la lógica para guardar los cambios (enviarlos a la API o base de datos)
     setIsEditing(false);
     alert('Información guardada correctamente.');
   };
 
   return (
     <div className="perfil-container">
+      {/* Barra lateral añadida */}
       <aside className="sidebar">
         <h2>¡Hola Matías Vásquez!</h2>
         <ul className="menu">
-          <li><a href="#" className="menu-item">Inicio</a></li>
-          <li><a href="#" className="menu-item">Ayuda</a></li>
-          <li><a href="#" className="menu-item active">Información de la cuenta</a></li>
-          <li><a href="#" className="menu-item">Historial de Pedidos</a></li>
-          <li><a href="#" className="menu-item">Favoritos</a></li>
-          <li><a href="#" className="menu-item">Direcciones</a></li>
-          <li><a href="#" className="menu-item logout">Cerrar Sesión</a></li>
+          <li><Link to="/perfil" className="menu-item">Información de la cuenta</Link></li>
+          <li><Link to="/direcciones" className="menu-item">Direcciones</Link></li>
+          <li><Link to="/historial-pedidos" className="menu-item">Historial de Pedidos</Link></li>
+          <li><Link to="/preguntas-frecuentes" className="menu-item">Preguntas Frecuentes</Link></li>
+          <li><Link to="/logout" className="menu-item logout">Cerrar Sesión</Link></li>
         </ul>
       </aside>
 
@@ -101,29 +100,6 @@ const MiPerfil = () => {
           <div className="password-section">
             <h4>Contraseña</h4>
             <p>*********</p>
-          </div>
-        </div>
-
-        {/* Nueva sección de direcciones */}
-        <div className="info-card">
-          <h3>Direcciones</h3>
-          <div className="info-section">
-            <h4>Agregar o Editar Dirección</h4>
-            <form className="address-form">
-              <label htmlFor="address">Dirección</label>
-              <input type="text" id="address" name="address" placeholder="Calle, Número, Ciudad, etc." />
-
-              <label htmlFor="city">Ciudad</label>
-              <input type="text" id="city" name="city" placeholder="Ciudad" />
-
-              <label htmlFor="postal-code">Código Postal</label>
-              <input type="text" id="postal-code" name="postal-code" placeholder="Código Postal" />
-
-              <label htmlFor="region">Región</label>
-              <input type="text" id="region" name="region" placeholder="Región" />
-
-              <button type="submit" className="save-btn">Guardar Dirección</button>
-            </form>
           </div>
         </div>
       </main>

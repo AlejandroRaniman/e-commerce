@@ -1,73 +1,62 @@
 import React, { useState } from 'react';
-import AgregarDireccion from './AgregarDireccion'; // Importar el componente
-import '../../styles/acc/HistorialDirecciones.css';
+import { Link } from 'react-router-dom';  // Para las rutas de navegación
+import '../../styles/acc/Miperfil.css';
 
 const HistorialDirecciones = () => {
-  const [direcciones, setDirecciones] = useState([
-    {
-      id: 1,
-      nombre: 'Matías Vásquez',
-      rut: '12.345.678-9',
-      telefono: '+56 961354',
-      region: 'Metropolitana',
-      comuna: 'Santiago',
-      calleNumero: 'Av. Siempre Viva 742',
-    },
-    {
-      id: 2,
-      nombre: 'Juan Pérez',
-      rut: '12.345.678-0',
-      telefono: '+56 912345',
-      region: 'Valparaíso',
-      comuna: 'Viña del Mar',
-      calleNumero: 'Calle Falsa 123',
-    },
-  ]);
+  const [showModal, setShowModal] = useState(false);  // Estado para controlar el modal
 
-  const [mostrarFormulario, setMostrarFormulario] = useState(false);
-
-  const handleAdd = () => {
-    setMostrarFormulario(true);
-  };
-
-  const handleCancel = () => {
-    setMostrarFormulario(false);
-  };
-
-  const handleConfirm = (nuevaDireccion) => {
-    setDirecciones([...direcciones, { id: direcciones.length + 1, ...nuevaDireccion }]);
-    setMostrarFormulario(false);
+  const toggleModal = () => {
+    setShowModal(!showModal);
   };
 
   return (
-    <div className="historial-direcciones-container">
-      <h2 className="titulo-historial">Historial de Direcciones</h2>
-      <div className="direccion-lista">
-        {direcciones.map((direccion) => (
-          <div key={direccion.id} className="direccion-card">
-            <h3 className="direccion-titulo">Dirección de Envío</h3>
-            <div className="direccion-detalles">
-              <p><strong>Nombre:</strong> {direccion.nombre}</p>
-              <p><strong>RUT:</strong> {direccion.rut}</p>
-              <p><strong>Teléfono:</strong> {direccion.telefono}</p>
-              <p><strong>Región:</strong> {direccion.region}</p>
-              <p><strong>Comuna:</strong> {direccion.comuna}</p>
-              <p><strong>Calle y Número:</strong> {direccion.calleNumero}</p>
+    <div className="perfil-container">
+      {/* Barra lateral */}
+      <aside className="sidebar">
+        <h2>¡Hola Matías Vásquez!</h2>
+        <ul className="menu">
+          <li><Link to="/perfil" className="menu-item">Información de la cuenta</Link></li>
+          <li><Link to="/direcciones" className="menu-item">Direcciones</Link></li>
+          <li><Link to="/historial-pedidos" className="menu-item">Historial de Pedidos</Link></li>
+          <li><Link to="/preguntas-frecuentes" className="menu-item">Preguntas Frecuentes</Link></li>
+          <li><Link to="/logout" className="menu-item logout">Cerrar Sesión</Link></li>
+        </ul>
+      </aside>
+
+      <main className="profile-content">
+        <h3>Historial de Direcciones</h3>
+        {/* Botón para abrir el modal */}
+        <button onClick={toggleModal} className="add-btn">Agregar Nueva Dirección</button>
+
+        {/* Modal para agregar nuevas direcciones */}
+        {showModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <span className="close-btn" onClick={toggleModal}>&times;</span>
+              <h4>Agregar Nueva Dirección</h4>
+              <form>
+                <label htmlFor="direccion">Dirección:</label>
+                <input type="text" id="direccion" name="direccion" />
+
+                <label htmlFor="ciudad">Ciudad:</label>
+                <input type="text" id="ciudad" name="ciudad" />
+
+                <label htmlFor="region">Región:</label>
+                <input type="text" id="region" name="region" />
+
+                <button type="submit" className="save-btn">Guardar Dirección</button>
+              </form>
             </div>
           </div>
-        ))}
-
-        {/* Mostrar formulario de agregar dirección si se hace clic en agregar */}
-        {mostrarFormulario ? (
-          <AgregarDireccion onConfirm={handleConfirm} onCancel={handleCancel} />
-        ) : (
-          <div className="nueva-direccion-card">
-            <button className="agregar-btn" onClick={handleAdd}>
-              + Agregar Nueva Dirección
-            </button>
-          </div>
         )}
-      </div>
+
+        {/* Aquí irían las direcciones existentes */}
+        <ul className="direccion-list">
+          <li>Dirección 1</li>
+          <li>Dirección 2</li>
+          {/* Más direcciones... */}
+        </ul>
+      </main>
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 import '../styles/Checkout.css';
 
 // Componente Modal
@@ -18,12 +19,21 @@ const Modal = ({ show, onClose, children }) => {
 };
 
 const Checkout = () => {
-  // Estado para controlar la visibilidad del modal
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate(); // Usar navigate para redirigir al usuario
 
   // Función para abrir/cerrar el modal
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
+  };
+
+  // Simulación de procesar pago y redirigir a la animación de confirmación del pedido
+  const handlePayment = () => {
+    // Simula el procesamiento del pago
+    setTimeout(() => {
+      // Redirige a la página de confirmación de pedido
+      navigate('/order-confirmation');
+    }, 2000); // Simulación de espera de 2 segundos antes de redirigir
   };
 
   return (
@@ -39,7 +49,6 @@ const Checkout = () => {
             <button className="edit-btn">✏️</button>
           </div>
           <button className="edit-link">Editar</button>
-          {/* Abrir modal al hacer clic en "Añadir Nueva Dirección" */}
           <button className="add-link" onClick={toggleModal}>+ Añadir Nueva Dirección</button>
         </div>
 
@@ -134,7 +143,7 @@ const Checkout = () => {
         <p>Productos(X): $xxxxxxx</p>
         <p>Descuentos(X): $-xxxxxxx</p>
         <p className="total">Total: $xxxxxxxx</p>
-        <button className="checkout-btn">
+        <button className="checkout-btn" onClick={handlePayment}>
           Realizar Pago
         </button>
       </div>

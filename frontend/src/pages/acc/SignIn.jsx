@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { loginUser } from '../../api/apiClient';
 import { AuthContext } from '../../context/AuthContext';
 import '../../styles/acc/signIn.css';
@@ -10,6 +10,10 @@ const SignIn = () => {
     const [message, setMessage] = useState('');
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
+    const location = useLocation();
+
+    // Obtener la ruta desde la cual el usuario fue redirigido
+    const from = location.state?.from || '/';
 
     const handleSignIn = async (e) => {
         e.preventDefault();
@@ -20,11 +24,13 @@ const SignIn = () => {
             if (response.message === 'login_success') {
                 login({ username: response.username, role: response.role, access_token: response.access_token });
                 setMessage('Inicio de sesión exitoso, redirigiendo...');
+
                 setTimeout(() => {
                     if (response.role === 'admin') {
                         window.location.href = 'http://localhost:5000/admin';
                     } else {
-                        navigate('/');
+                        // Si viene del carrito, redirigir al checkout, de lo contrario a la página principal
+                        navigate(from, { replace: true });
                     }
                 }, 2000);
             } else {

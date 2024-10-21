@@ -1,45 +1,49 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import '../styles/CategoryCarousel.css';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 const categories = [
-  { label: "Escolar", image: process.env.PUBLIC_URL + '/assets/escolar.jpg' },
-  { label: "Regalo", image: process.env.PUBLIC_URL + '/assets/regalo.jpg' },
-  { label: "Ferretería", image: process.env.PUBLIC_URL + '/assets/ferreteria.jpg' },
-  { label: "Hogar", image: process.env.PUBLIC_URL + '/assets/hogar.jpg' },
-  { label: "Cocina", image: process.env.PUBLIC_URL + '/assets/cocina.jpg' },
-  { label: "Baño", image: process.env.PUBLIC_URL + '/assets/bano.jpg' },
+  { name: 'Hogar', image: '/images/hogar.jpg', link: '/hogar' },
+  { name: 'Cocina', image: '/images/cocina.jpg', link: '/cocina' },
+  { name: 'Baño', image: '/images/bano.jpg', link: '/bano' },
+  { name: 'Juguetería', image: '/images/jugueteria.jpg', link: '/jugueteria' },
+  { name: 'Útiles', image: '/images/utiles.jpg', link: '/utiles' },
+  { name: 'Jardín', image: '/images/jardin.jpg', link: '/jardin' },
+  { name: 'Ferretería', image: '/images/ferreteria.jpg', link: '/ferreteria' },
+  { name: 'Celebraciones', image: '/images/celebraciones.jpg', link: '/celebraciones' },
 ];
 
 const CategoryCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [direction, setDirection] = useState('');
+  const [animationDirection, setAnimationDirection] = useState(null);
 
-  const nextSlide = () => {
+  const showNextSet = () => {
     if (!isAnimating) {
-      setDirection('next');
       setIsAnimating(true);
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % categories.length);
+      setAnimationDirection('next');
+      setTimeout(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % categories.length);
+        setIsAnimating(false);
+      }, 500);
     }
   };
 
-  const prevSlide = () => {
+  const showPrevSet = () => {
     if (!isAnimating) {
-      setDirection('prev');
       setIsAnimating(true);
-      setCurrentIndex((prevIndex) => (prevIndex - 1 + categories.length) % categories.length);
+      setAnimationDirection('prev');
+      setTimeout(() => {
+        setCurrentIndex((prevIndex) => (prevIndex - 1 + categories.length) % categories.length);
+        setIsAnimating(false);
+      }, 500);
     }
   };
 
   useEffect(() => {
-    if (isAnimating) {
-      const timer = setTimeout(() => {
-        setIsAnimating(false);
-      }, 500); // Match this with your CSS transition time
-      return () => clearTimeout(timer);
-    }
-  }, [isAnimating]);
+    const interval = setInterval(showNextSet, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   const getVisibleCategories = () => {
     const visibleCategories = [];
@@ -52,24 +56,20 @@ const CategoryCarousel = () => {
 
   return (
     <div className="category-carousel-container">
-      <h2>Categorías</h2>
+      <h2>Explora nuestras categorías</h2>
       <div className="category-carousel">
-        <button className="carousel-button prev-button" onClick={prevSlide}>
-          <FaChevronLeft />
-        </button>
-        <div className={`category-slider ${isAnimating ? `animating ${direction}` : ''}`}>
+        <button className="carousel-button prev-button" onClick={showPrevSet}>&lt;</button>
+        <div className={`category-slider ${isAnimating ? 'animating' : ''} ${animationDirection || ''}`}>
           {getVisibleCategories().map((category, index) => (
-            <div key={index} className="category-item">
+            <Link to={category.link} key={index} className="category-item">
               <div className="category-card">
-                <img src={category.image} alt={category.label} />
-                <p>{category.label}</p>
+                <img src={category.image} alt={category.name} />
+                <p>{category.name}</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
-        <button className="carousel-button next-button" onClick={nextSlide}>
-          <FaChevronRight />
-        </button>
+        <button className="carousel-button next-button" onClick={showNextSet}>&gt;</button>
       </div>
       <div className="category-carousel-dots">
         {categories.map((_, index) => (

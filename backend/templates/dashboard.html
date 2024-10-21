@@ -3,10 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/chart.js') }}"></script>
 </head>
 <body>
-    <h1>Welcome to the Dashboard!</h1>
-    <p>You have successfully logged in.</p>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='img/Huamao.png') }}" alt="Huamao Logo">
+            </div>
+            <ul class="menu">
+                <li><a href="#">数据可视化</a></li>
+                <li><a href="#">销售总单</a></li>
+            </ul>
+        </aside>
+    
+        <main class="content">
+            <header class="header">
+                <div class="user-info">
+                    <p>管理员</p>
+                </div>
+                <div class="actions">
+                    <button class="notification-btn">🔔</button>
+                    <button class="add-product-btn">+ 添加货</button>
+                </div>
+            </header>
+    
+            <section class="charts">
+                <div class="chart-container">
+                    <canvas id="lineChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <canvas id="pieChart"></canvas>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Script para los gráficos -->
+    <script>
+        // Configuración del gráfico de línea
+        const lineCtx = document.getElementById('lineChart').getContext('2d');
+        const lineChart = new Chart(lineCtx, {
+            type: 'line',
+            data: {
+                labels: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                datasets: [{
+                    label: '订单',
+                    data: [100, 150, 120, 180, 200, 150, 100, 170, 180, 190, 140, 160],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    fill: false
+                }, {
+                    label: '余额',
+                    data: [90, 130, 110, 170, 190, 130, 90, 150, 160, 180, 120, 140],
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    fill: false
+                }]
+            }
+        });
+
+        // Configuración del gráfico de pastel
+        const pieCtx = document.getElementById('pieChart').getContext('2d');
+        const pieChart = new Chart(pieCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Category A', 'Category B', 'Category C'],
+                datasets: [{
+                    data: [30, 45, 25],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            }
+        });
+    </script>
 </body>
 </html>

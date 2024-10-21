@@ -12,31 +12,22 @@ import ProductCarousel from './components/ProductCarousel';
 import ProcessFlow from './components/ProcessFlow';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
+import OrderAnimation from './components/OrderAnimation';
+
+// Contextos
 import { AuthProvider, AuthContext } from './context/AuthContext';
+import { CartProvider } from './context/CartContext'; 
+
+// Páginas
 import Carro from './pages/Carro';
-import Checkout from './pages/Checkout'; // Asegúrate de que la ruta sea correcta
-
-
-// Categorías
-import Hogar from './pages/categorias/Hogar';
-import Cocina from './pages/categorias/Cocina';
-import Baño from './pages/categorias/Baño';
-import Jugueteria from './pages/categorias/Jugueteria';
-import Utiles from './pages/categorias/Utiles';
-import Jardin from './pages/categorias/Jardin';
-import Ferreteria from './pages/categorias/Ferreteria';
-import Celebraciones from './pages/categorias/Celebraciones';
-
-
-// Páginas de autenticación
+import Checkout from './pages/Checkout';
 import SignIn from './pages/acc/SignIn';
 import Dashboard from './pages/Dashboard';
 import Register from './pages/acc/Register';
 import Miperfil from './pages/acc/Miperfil';
 import HistorialDirecciones from './pages/acc/HistorialDirecciones';
-
-
-
+import HistorialPedidos from './pages/acc/HistorialPedidos';
+import Categoria from './pages/categorias/Categoria'; // Categorías usando componente genérico
 
 // Componente Home
 const Home = () => (
@@ -74,25 +65,21 @@ const Layout = () => {
       <Routes>
         <Route path="/" element={<Home />} />
 
-        {/* Rutas para las categorías */}
-        <Route path="/hogar" element={<Hogar />} />
-        <Route path="/cocina" element={<Cocina />} />
-        <Route path="/bano" element={<Baño />} />
-        <Route path="/jugueteria" element={<Jugueteria />} />
-        <Route path="/utiles" element={<Utiles />} />
-        <Route path="/jardin" element={<Jardin />} />
-        <Route path="/ferreteria" element={<Ferreteria />} />
-        <Route path="/celebraciones" element={<Celebraciones />} />
+        {/* Ruta dinámica para manejar todas las categorías */}
+        <Route path="/category/:category" element={<Categoria />} />
+
+        {/* Otras rutas */}
         <Route path="/carro" element={<Carro />} />
         <Route path="/checkout" element={<Checkout />} />
-
-
+        <Route path="/order-confirmation" element={<OrderAnimation />} />
 
         {/* Rutas para las páginas de Login y Registro */}
         <Route path="/signin" element={<SignIn />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/miperfil" element={<Miperfil />} />
-        <Route path="/historial-direcciones" element={<HistorialDirecciones />} />
+        <Route path="/perfil" element={<Miperfil />} />
+        <Route path="/direcciones" element={<HistorialDirecciones />} />
+        <Route path="/historial-pedidos" element={<HistorialPedidos />} />
+
         {/* Ruta protegida para el Dashboard */}
         <Route
           path="/dashboard"
@@ -116,9 +103,11 @@ const Layout = () => {
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <Layout />
-      </Router>
+      <CartProvider> {/* Envolver la aplicación en CartProvider */}
+        <Router>
+          <Layout />
+        </Router>
+      </CartProvider>
     </AuthProvider>
   );
 }

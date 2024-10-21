@@ -1,11 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/Carro.css';
+import '../styles/Carro.css'; 
+import { AuthContext } from '../context/AuthContext';
 
 const Carro = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
+  const [cartSummary, setCartSummary] = useState({
+    totalItems: 0,
+    totalPrice: 0,
+  });
+
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -14,150 +19,82 @@ const Carro = () => {
 
   const fetchCartItems = async () => {
     try {
-      setLoading(true);
       const response = await fetch('http://127.0.0.1:5000/cart/items', {
         method: 'GET',
-        credentials: 'include', // Esto permite enviar cookies de sesión
+        credentials: 'include',
       });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
       const data = await response.json();
-      setProducts(data);
+
+      const groupedItems = data.reduce((acc, item) => {
+        const existingItem = acc.find(i => i.product_details.id === item.product_details.id);
+        if (existingItem) {
+          existingItem.quantity += item.quantity;
+        } else {
+          acc.push(item);
+        }
+        return acc;
+      }, []);
+
+      setCartItems(groupedItems);
+      calculateCartSummary(groupedItems);
     } catch (error) {
-      console.error('Error fetching products:', error);
-      setError('Error al cargar los productos.');
-    } finally {
-      setLoading(false);
+      console.error('Error fetching cart items:', error);
     }
   };
 
-  const handleRemoveItem = async (itemId) => {
+  const calculateCartSummary = (items) => {
+    const totalItems = items.reduce((acc, item) => acc + item.quantity, 0);
+    const totalPrice = items.reduce((acc, item) => acc + item.product_details.price * item.quantity, 0);
+    setCartSummary({
+      totalItems,
+      totalPrice,
+    });
+  };
+
+  const handleRemoveFromCart = async (itemId) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/cart/remove/${itemId}`, {
+      await fetch(`http://127.0.0.1:5000/cart/remove/${itemId}`, {
         method: 'DELETE',
         credentials: 'include',
       });
-
-      if (response.ok) {
-        alert('Producto eliminado del carrito');
-        fetchCartItems(); // Refresca los productos del carrito después de eliminar uno
-      } else {
-        const data = await response.json();
-        alert(`Error: ${data.message}`);
-      }
+      fetchCartItems();
     } catch (error) {
-      console.error('Error al eliminar el producto del carrito:', error);
-    }
-  };
-
-  const handleUpdateQuantity = async (itemId, newQuantity) => {
-    try {
-      if (newQuantity <= 0) {
-        alert('La cantidad debe ser mayor que cero');
-        return;
-      }
-
-      const response = await fetch(`http://127.0.0.1:5000/cart/update/${itemId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ quantity: newQuantity }),
-        credentials: 'include',
-      });
-
-      if (response.ok) {
-        fetchCartItems(); // Refresca los productos del carrito después de actualizar la cantidad
-      } else {
-        const data = await response.json();
-        alert(`Error: ${data.message}`);
-      }
-    } catch (error) {
-      console.error('Error al actualizar la cantidad del producto:', error);
+      console.error('Error removing item from cart:', error);
     }
   };
 
   const handleCheckout = () => {
-    // Verificar si el usuario está autenticado
-    const isAuthenticated = Boolean(localStorage.getItem('auth_token')); // Ejemplo de verificación
-    if (!isAuthenticated) {
-      alert('Debe iniciar sesión para continuar con el pago.');
-      navigate('/login');
+    if (user) {
+        navigate('/checkout');
     } else {
-      // Continuar con el proceso de pago
-      navigate('/checkout');
+        navigate('/signin', { state: { from: '/checkout' } });
     }
-  };
+};
 
   return (
-    <div className="carro-container">
-      <div className="carro-productos">
-        <h2>Carro de Compras</h2>
-        {loading ? (
-          <p className="loading">Cargando productos...</p>
-        ) : error ? (
-          <p className="error">{error}</p>
-        ) : (
-          products.length > 0 ? (
-            products.map((product) => (
-              <div key={product.id} className="producto-item">
-                <img src={product.image_url || 'placeholder.png'} alt={product.product_name} className="product-image" />
-                <div className="product-details">
-                  <p className="product-title">{product.product_name}</p>
-                  <p className="product-price">Precio: $ {product.price}</p>
-                </div>
-                <div className="product-subtotal">
-                  <p>Subtotal: $ {product.price * product.quantity}</p>
-                  <div className="product-actions">
-                    <button
-                      className="quantity-btn"
-                      onClick={() => handleUpdateQuantity(product.id, product.quantity - 1)}
-                    >
-                      -
-                    </button>
-                    <input
-                      type="number"
-                      value={product.quantity}
-                      readOnly
-                      className="quantity-input"
-                    />
-                    <button
-                      className="quantity-btn"
-                      onClick={() => handleUpdateQuantity(product.id, product.quantity + 1)}
-                    >
-                      +
-                    </button>
-                    <button
-                      className="remove-btn"
-                      onClick={() => handleRemoveItem(product.id)}
-                    >
-                      ✖
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p>No se encontraron productos en el carrito.</p>
-          )
-        )}
-      </div>
+    <div>
+      <h2>Carrito de Compras</h2>
+      {cartItems.length === 0 ? (
+        <p>El carrito está vacío</p>
+      ) : (
+        <div>
+          {cartItems.map((item) => (
+            <div key={item.product_details.id}>
+              <h4>{item.product_details.name}</h4>
+              <p>Precio: ${item.product_details.price}</p>
+              <p>Cantidad: {item.quantity}</p>
+              <button onClick={() => handleRemoveFromCart(item.id)}>Eliminar</button>
+            </div>
+          ))}
 
-      {/* Resumen de compra */}
-      <div className="resumen-compra">
-        <h3>Resumen de la compra</h3>
-        <div className="resumen-details">
-          <p>Productos({products.length}): $ {products.reduce((total, product) => total + product.price * product.quantity, 0)}</p>
-          <p>Descuentos(X): $ 0</p> {/* Puedes implementar lógica de descuento si es necesario */}
-          <p className="total">Total: $ {products.reduce((total, product) => total + product.price * product.quantity, 0)}</p>
-          <button className="checkout-btn" onClick={handleCheckout}>
-            Realizar pago
-          </button>
+          <div className="cart-summary">
+            <h3>Resumen de la compra</h3>
+            <p>Total de productos: {cartSummary.totalItems}</p>
+            <p>Total a pagar: ${cartSummary.totalPrice.toFixed(2)}</p>
+            <button className="checkout-btn" onClick={handleCheckout}>Realizar Pago</button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

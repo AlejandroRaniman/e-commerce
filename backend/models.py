@@ -18,7 +18,8 @@ class Product(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     image_url = db.Column(db.String(255), nullable=True)
 
-    cart_items = db.relationship('CartItem', back_populates='product')
+    # Relación con CartItem
+    cart_items = db.relationship('CartItem', back_populates='product', cascade="all, delete-orphan")
 
     def to_dict(self):
         return {
@@ -34,8 +35,18 @@ class Product(db.Model):
 class CartItem(db.Model):
     __tablename__ = 'cart_items'
     id = db.Column(db.Integer, primary_key=True)
-    session_id = db.Column(db.String(100), nullable=True)  # Añade este campo
+    session_id = db.Column(db.String(100), nullable=True)
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
 
+    # Relación con Product
     product = db.relationship('Product', back_populates='cart_items')
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'session_id': self.session_id,
+            'product_id': self.product_id,
+            'quantity': self.quantity,
+            'product': self.product.to_dict()  # Incluye la información del producto
+        }
